@@ -2,8 +2,9 @@
 
 ![Balrog logo](https://user-images.githubusercontent.com/32128719/55335192-9566a000-5492-11e9-9449-746de68fbe94.png)
 
-Balrog is a lightweight authorization library for Ruby on Rails that can
-protect your routes with a single username & password combination.
+Balrog is a lightweight authorization library for Ruby on Rails written by
+[Pixie Labs](https://pixielabs.io) that can protect your routes with a single
+username & password combination.
 
 Balrog is an alternative to `http_basic_authentication_with` that provides some
 advantages:
