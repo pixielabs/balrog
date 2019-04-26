@@ -42,6 +42,8 @@ group :development, :test do
   # Testing framework
   gem 'rspec'
   gem 'rspec-rails'
+  # CirclCI formatter
+  gem 'rspec_junit_formatter'
 end
 
 group :development do
