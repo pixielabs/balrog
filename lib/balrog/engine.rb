@@ -1,13 +1,16 @@
-require_relative 'helpers'
-require_relative 'view_helpers'
-
 class Balrog::Engine < Rails::Engine
-  # Make the Balrog helpers available in any controller.
-  initializer "balrog.configure_rails_initialization" do 
+  # Make authenticate_with_balrog! available.
+  initializer "balrog.action_controller" do 
     ActiveSupport.on_load(:action_controller) do
+      require_relative 'helpers'
       include Balrog::Helpers
     end
+  end
+
+  # Add balrog_logout_button as a global view helper.
+  initializer "balrog.action_view" do
     ActiveSupport.on_load(:action_view) do
+      require_relative 'view_helpers'
       include Balrog::ViewHelpers
     end
   end

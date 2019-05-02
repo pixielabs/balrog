@@ -62,22 +62,35 @@ class AdminController < ApplicationController
   before_action :authenticate_with_balrog!
 end
 ```
-## Logout Button
 
-To add a logout button, you can call the `balrog_logout` view helper method and pass in a hash of html options to style it. After logout, the user will be redirected to the root of the app.
+## Logout button
 
-In an erb view file,
+To add a logout button, you can call the `balrog_logout_button` view helper
+method and pass in a hash of HTML options to style it. After logout, the user
+will be redirected to the root of the app.
+
+For example, in your view:
 
 ```erb
-<ul>
+<ul class='nav'>
   <li>....</li>
-  <li><%= balrog_logout_button({ text: 'Admin Logout', class: 'logout-button' }) %></li>
+  <li><%= balrog_logout_button(text: 'Admin Logout', class: 'logout-button') %></li>
   <li>....</li>
 </ul>
 ```
 
 
 ## Contributing
+
+### Running the tests
+
+Tests are part of the dummy Rails app within the spec folder:
+
+```
+$ cd spec/dummy-rails-app
+$ bundle
+$ rspec
+```
 
 Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 - Check out the latest master to make sure the feature hasn't been implemented
