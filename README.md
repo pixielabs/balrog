@@ -74,9 +74,18 @@ For example, in your view:
 ```erb
 <ul class='nav'>
   <li>....</li>
-  <li><%= balrog_logout_button(text: 'Admin Logout', class: 'logout-button') %></li>
+  <li><%= balrog_logout_button 'Admin Logout' %></li>
   <li>....</li>
 </ul>
+```
+
+Other usage examples:
+
+```erb
+<%= balrog_logout_button %>
+<%= balrog_logout_button "Leave this place" %>
+<%= balrog_logout_button "Click me", class: 'fancy-button--with-custom-text' %>
+<%= balrog_logout_button class: 'fancy-button--with-default-text' %>
 ```
 
 
