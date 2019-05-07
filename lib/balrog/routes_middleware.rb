@@ -20,7 +20,7 @@ class Balrog::RoutesMiddleware < Balrog::Middleware
   def call(env)
     unless env['rack.session']['balrog'] == 'authenticated'
       referer = env['rack.session']["HTTP_REFERER"] || '/'
-      view = File.open('../../app/views/balrog/gate.html.erb', 'r')
+      view = File.open('../../app/views/balrog/gate.html', 'r')
       return [200, {"Content-Type" => "text/html"}, [view.read]]  
     end
     super
