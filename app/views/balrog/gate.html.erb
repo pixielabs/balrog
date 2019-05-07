@@ -1,26 +1,26 @@
 <!doctype html>
 <html lang=en>
-<head>
-  <meta charset=utf-8>
-  <title>Login</title>
-  <%= stylesheet_link_tag "balrog/gate" %>
-</head>
+  <head>
+    <meta charset=utf-8>
+    <title>Login</title>
+    <link rel="stylesheet" media="screen" href="/assets/balrog/gate.css">
+  </head>
 
-<body>
+  <body>
 
-  <section>
-    <form action='/balrog/signin' method='POST'>
-      <input autofocus type='password' name='password' placeholder='Password'>
-      <button type='submit'>Login</button>
-    </form>
-  </section>
+    <section>
+      <form action='/balrog/signin' method='POST'>
+        <input autofocus type='password' name='password' placeholder='Password'>
+        <button type='submit'>Login</button>
+      </form>
+    </section>
 
-  <footer>
-    <a href="https://github.com/pixielabs/balrog" target="_blank">
-      <%= image_tag "balrog/logo.png", class: 'logo' %>
-    </a>
-  </footer>
+    <footer>
+      <a href="https://github.com/pixielabs/balrog" target="_blank">
+        <img class="logo" src="/assets/balrog/logo.png">
+      </a>
+    </footer>
 
-</body>
+  </body>
 
 </html>

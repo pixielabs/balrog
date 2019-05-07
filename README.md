@@ -32,12 +32,35 @@ gem 'balrog'
 
 Run the installer to generate an initializer:
 
-```
+```shell
 $ bundle exec rails generate balrog:install
 Enter New Password:
 Confirm New Password:
       create  config/initializers/balrog.rb
 $
+```
+
+## Installation to protect the SideKiq Web route
+
+Add the gem to your Gemfile:
+
+```ruby
+gem 'balrog'
+```
+
+Tell SideKiq::Web to use Balrog::RoutesMiddleware:
+
+```ruby
+require 'sidekiq/web'
+
+# In order to force sidekiq to use the rails app's session,
+# we need to disable the Sidekiq's session.
+Sidekiq::Web.disable(:sessions)
+
+# Then we tell SideKiq to use Balrog::RoutesMiddleware
+Sidekiq::Web.use Balrog::RoutesMiddleware
+
+mount Sidekiq::Web => '/sidekiq'
 ```
 
 ## Regenerating a password hash
