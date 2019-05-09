@@ -1,5 +1,4 @@
 require 'bcrypt'
-require_relative 'helpers'
 
 # Public: Balrog middleware that handles form submissions, checking the
 # password against the configured hash, and setting a session variable if
@@ -14,16 +13,17 @@ require_relative 'helpers'
 #
 # mount Sidekiq::Web => '/sidekiq'
 
-class Balrog::RoutesMiddleware < Balrog::Middleware
-  include Balrog::Helpers
+class Balrog::RoutesMiddleware
+  def initialize(app)
+    @app = app
+  end
 
   def call(env)
     unless env['rack.session']['balrog'] == 'authenticated'
-      referer = env['rack.session']["HTTP_REFERER"] || '/'
-      view = File.open('../../app/views/balrog/gate.html', 'r')
-      return [200, {"Content-Type" => "text/html"}, [view.read]]  
+      html = ApplicationController.renderer.render 'balrog/gate', layout: nil
+      return [200, {"Content-Type" => "text/html"}, [html]]  
     end
-    super
+    @app.call(env)
   end 
 
 end

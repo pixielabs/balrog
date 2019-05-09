@@ -40,29 +40,6 @@ Confirm New Password:
 $
 ```
 
-## Installation to protect the SideKiq Web route
-
-Add the gem to your Gemfile:
-
-```ruby
-gem 'balrog'
-```
-
-Tell SideKiq::Web to use Balrog::RoutesMiddleware:
-
-```ruby
-require 'sidekiq/web'
-
-# In order to force sidekiq to use the rails app's session,
-# we need to disable the Sidekiq's session.
-Sidekiq::Web.disable(:sessions)
-
-# Then we tell SideKiq to use Balrog::RoutesMiddleware
-Sidekiq::Web.use Balrog::RoutesMiddleware
-
-mount Sidekiq::Web => '/sidekiq'
-```
-
 ## Regenerating a password hash
 
 If you need to create a new password, modify the hash in the Balrog initializer.
@@ -84,6 +61,36 @@ Copy this hash into config/initializers/balrog.rb
 class AdminController < ApplicationController
   before_action :authenticate_with_balrog!
 end
+```
+
+## Restricting access to mounted Middleware
+
+Add the gems to your Gemfile:
+
+```ruby
+# Use Balrog for authentication
+gem 'balrog'
+# Use Sidekiq for background jobs
+gem 'sidekiq'
+```
+
+Then disable Sidekiq Web's session in config/initializers/sidekiq.rb
+
+```ruby
+require 'sidekiq/web'
+
+# In order to force sidekiq to use the rails app's session,
+# we need to disable the Sidekiq's session.
+Sidekiq::Web.disable(:sessions)
+```
+
+And lastly, we tell SideKiq::Web to use Balrog::RoutesMiddleware in the config/routes.rb:
+
+```ruby
+# Then we tell SideKiq to use Balrog::RoutesMiddleware
+Sidekiq::Web.use Balrog::RoutesMiddleware
+
+mount Sidekiq::Web => '/sidekiq'
 ```
 
 ## Logout button
