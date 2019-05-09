@@ -2,6 +2,7 @@
 
 ![Balrog logo](https://user-images.githubusercontent.com/32128719/55335192-9566a000-5492-11e9-9449-746de68fbe94.png)
 
+[![Gem Version](https://badge.fury.io/rb/balrog.svg)](https://badge.fury.io/rb/balrog)
 [![CircleCI](https://circleci.com/gh/pixielabs/balrog.svg?style=svg)](https://circleci.com/gh/pixielabs/balrog)
 
 Balrog is a lightweight authorization library for Ruby on Rails written by
