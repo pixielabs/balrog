@@ -1,8 +1,5 @@
-require 'bcrypt'
-
-# Public: Balrog middleware that handles form submissions, checking the
-# password against the configured hash, and setting a session variable if
-# they match.
+# Public: Balrog routes middleware that redirects the user to a security
+# gate unless the session includes { 'balrog' => 'authenticated' }.
 # 
 # In order to protect SideKiq Web you would do something like this: 
 #
