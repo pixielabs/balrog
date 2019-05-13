@@ -17,11 +17,6 @@ advantages:
 * Better support for password managers (which often don't support basic
   authentication dialog boxes).
 
-## Requirements
-
-Balrog is designed to be used with Ruby on Rails applications, and has been
-tested against Ruby on Rails 5.
-
 ## Installation
 
 Add the gem to your Gemfile:
