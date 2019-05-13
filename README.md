@@ -18,11 +18,6 @@ advantages:
 * Better support for password managers (which often don't support basic
   authentication dialog boxes).
 
-## Requirements
-
-Balrog is designed to be used with Ruby on Rails applications, and has been
-tested against Ruby on Rails 5.
-
 ## Installation
 
 Add the gem to your Gemfile:
@@ -64,7 +59,43 @@ class AdminController < ApplicationController
 end
 ```
 
+## Logout button
+
+To add a logout button, you can call the `balrog_logout_button` view helper
+method and pass in a hash of HTML options to style it. After logout, the user
+will be redirected to the root of the app.
+
+For example, in your view:
+
+```erb
+<ul class='nav'>
+  <li>....</li>
+  <li><%= balrog_logout_button 'Admin Logout' %></li>
+  <li>....</li>
+</ul>
+```
+
+Other usage examples:
+
+```erb
+<%= balrog_logout_button %>
+<%= balrog_logout_button "Leave this place" %>
+<%= balrog_logout_button "Click me", class: 'fancy-button--with-custom-text' %>
+<%= balrog_logout_button class: 'fancy-button--with-default-text' %>
+```
+
+
 ## Contributing
+
+### Running the tests
+
+Tests are part of the dummy Rails app within the spec folder:
+
+```
+$ cd spec/dummy-rails-app
+$ bundle
+$ rspec
+```
 
 Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 - Check out the latest master to make sure the feature hasn't been implemented
@@ -82,7 +113,6 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 ## TODO
 
  * Restricting access via `routes.rb`
- * Logout
  * Test coverage
  * Check it's OK with Ruby on Rails 6
  * Expire sessions

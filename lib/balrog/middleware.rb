@@ -21,6 +21,8 @@ class Balrog::Middleware
     method = env["REQUEST_METHOD"]
     if method == 'POST' && path == '/balrog/signin'
       handle_login(env)
+    elsif method == "DELETE" && path == '/balrog/logout'
+      handle_logout(env)
     else
       @app.call(env)
     end
@@ -60,6 +62,11 @@ class Balrog::Middleware
     referer = env["HTTP_REFERER"] || '/'
 
     [302, {"Location" => referer}, [""]]
+  end
+
+  def handle_logout(env)
+    env['rack.session'].delete(:balrog)
+    [302, {"Location" => '/'}, [""]]
   end
 
 end
