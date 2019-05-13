@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    balrog (0.1.0)
+    balrog (0.2.0)
       bcrypt (~> 3.0)
-      rails
+      rails (>= 4.2)
 
 GEM
   remote: https://rubygems.org/
