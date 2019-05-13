@@ -1,1 +1,3 @@
-Balrog::VERSION = "0.1.0"
+module Balrog
+  VERSION = "0.2.0"
+end
