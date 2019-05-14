@@ -59,18 +59,20 @@ class AdminController < ApplicationController
 end
 ```
 
-## Restricting access to mounted Middleware
+## Restricting access to mounted Rack applications within config/routes.rb
 
-Add the gems to your Gemfile:
+Use the `.use` [method](https://www.rubydoc.info/gems/rack/Rack%2FBuilder:use) to add Balrog to the 'stack'. 
+
+For example with Sidekiq::Web...
 
 ```ruby
-# Use Balrog for authentication
-gem 'balrog'
-# Use Sidekiq for background jobs
-gem 'sidekiq'
+# Then we tell SideKiq to use Balrog::RoutesMiddleware
+Sidekiq::Web.use Balrog::RoutesMiddleware
+
+mount Sidekiq::Web => '/sidekiq'
 ```
 
-Then disable Sidekiq Web's session in config/initializers/sidekiq.rb
+N.B. If you are mounting Sidekiq Web, you need to [disable Sidekiq Web's session in config/initializers/sidekiq.rb](https://github.com/mperham/sidekiq/issues/3377#issuecomment-381254940).
 
 ```ruby
 require 'sidekiq/web'
@@ -78,15 +80,6 @@ require 'sidekiq/web'
 # In order to force sidekiq to use the rails app's session,
 # we need to disable the Sidekiq's session.
 Sidekiq::Web.disable(:sessions)
-```
-
-And lastly, we tell SideKiq::Web to use Balrog::RoutesMiddleware in the config/routes.rb:
-
-```ruby
-# Then we tell SideKiq to use Balrog::RoutesMiddleware
-Sidekiq::Web.use Balrog::RoutesMiddleware
-
-mount Sidekiq::Web => '/sidekiq'
 ```
 
 ## Logout button
