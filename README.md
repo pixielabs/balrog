@@ -5,7 +5,7 @@
 [![Gem Version](https://badge.fury.io/rb/balrog.svg)](https://badge.fury.io/rb/balrog)
 [![CircleCI](https://circleci.com/gh/pixielabs/balrog.svg?style=svg)](https://circleci.com/gh/pixielabs/balrog)
 
-Balrog is a lightweight authorization library for Ruby on Rails written by
+Balrog is a lightweight authorization library for Ruby on Rails >= 5 written by
 [Pixie Labs](https://pixielabs.io) that can protect your routes with a single
 username & password combination.
 
