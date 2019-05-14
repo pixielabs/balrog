@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    balrog (0.2.0)
+    balrog (0.3.0)
       bcrypt (~> 3.0)
       rails (>= 4.2)
 
