@@ -5,7 +5,7 @@
 [![Gem Version](https://badge.fury.io/rb/balrog.svg)](https://badge.fury.io/rb/balrog)
 [![CircleCI](https://circleci.com/gh/pixielabs/balrog.svg?style=svg)](https://circleci.com/gh/pixielabs/balrog)
 
-Balrog is a lightweight authorization library for Ruby on Rails written by
+Balrog is a lightweight authorization library for Ruby on Rails >= 5 written by
 [Pixie Labs](https://pixielabs.io) that can protect your routes with a single
 username & password combination.
 
@@ -28,7 +28,7 @@ gem 'balrog'
 
 Run the installer to generate an initializer:
 
-```
+```shell
 $ bundle exec rails generate balrog:install
 Enter New Password:
 Confirm New Password:
@@ -57,6 +57,29 @@ Copy this hash into config/initializers/balrog.rb
 class AdminController < ApplicationController
   before_action :authenticate_with_balrog!
 end
+```
+
+## Restricting access to mounted Rack applications within config/routes.rb
+
+Use the `.use` [method](https://www.rubydoc.info/gems/rack/Rack%2FBuilder:use) to add Balrog to the 'stack'. 
+
+For example with Sidekiq::Web...
+
+```ruby
+# Then we tell SideKiq to use Balrog::RoutesMiddleware
+Sidekiq::Web.use Balrog::RoutesMiddleware
+
+mount Sidekiq::Web => '/sidekiq'
+```
+
+N.B. If you are mounting Sidekiq Web, you need to [disable Sidekiq Web's session in config/initializers/sidekiq.rb](https://github.com/mperham/sidekiq/issues/3377#issuecomment-381254940).
+
+```ruby
+require 'sidekiq/web'
+
+# In order to force sidekiq to use the rails app's session,
+# we need to disable the Sidekiq's session.
+Sidekiq::Web.disable(:sessions)
 ```
 
 ## Logout button
