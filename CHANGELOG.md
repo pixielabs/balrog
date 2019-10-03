@@ -1,3 +1,7 @@
+# 1.0.1
+
+- updated `nokogiri` to 1.10.4
+
 # 1.0.0
 
 - added `Balrog::RoutesMiddleware` module, which can be used to protect mounted Rack applications.
