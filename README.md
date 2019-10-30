@@ -132,5 +132,9 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
   want to have your own version, or is otherwise necessary, that is fine, but
   please isolate to its own commit so we can cherry-pick around it.
 
-[Roadmap](https://github.com/pixielabs/balrog/projects/1)
-----------------
+
+## TODO
+
+ * Restricting access via `routes.rb`
+ * Test coverage
+ * Expire sessions
