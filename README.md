@@ -132,10 +132,5 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
   want to have your own version, or is otherwise necessary, that is fine, but
   please isolate to its own commit so we can cherry-pick around it.
 
-
-## TODO
-
- * Restricting access via `routes.rb`
- * Test coverage
- * Check it's OK with Ruby on Rails 6
- * Expire sessions
+[Roadmap](https://github.com/pixielabs/balrog/projects/1)
+----------------
