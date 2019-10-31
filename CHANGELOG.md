@@ -1,3 +1,7 @@
+# 1.1.0
+
+- added `balrog:view` generator, enabling users to modify their Balrog gate view.
+
 # 1.0.0
 
 - added `Balrog::RoutesMiddleware` module, which can be used to protect mounted Rack applications.
