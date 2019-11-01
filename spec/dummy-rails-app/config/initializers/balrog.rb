@@ -1,3 +1,4 @@
 Rails.application.config.middleware.use Balrog::Middleware do
-  password_hash '$2a$10$IZ/Td/JiQknLW19cTyyl5OAYF2Vf.46D2ovZGlQfdUVbHiMk9gvDy'
+  password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
+  session_expires_after 4.hours
 end

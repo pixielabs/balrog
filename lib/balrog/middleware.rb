@@ -34,6 +34,10 @@ class Balrog::Middleware
     @password_hash = BCrypt::Password.new(input)
   end
 
+  def session_expires_after(time_period)
+    @session_length = time_period
+  end
+
   def handle_login(env)
     if env['rack.request.form_hash']
       submitted_password = env['rack.request.form_hash']['password']
@@ -56,7 +60,9 @@ class Balrog::Middleware
     end
 
     if @password_hash == submitted_password
-      env['rack.session'][:balrog] = 'authenticated'
+      balrogCookie = { value: 'authenticated' }
+      add_expiry_date(balrogCookie)
+      env['rack.session'][:balrog] = balrogCookie
     end
 
     referer = env["HTTP_REFERER"] || '/'
@@ -69,5 +75,12 @@ class Balrog::Middleware
     [302, {"Location" => '/'}, [""]]
   end
 
+  # If the user configured the Balrog session to expire, add the 
+  # expiry_date to the Balrog session.
+  def add_expiry_date(cookieHash)
+    if @session_length
+      cookieHash[:expiry_date] = DateTime.current + @session_length
+    end
+  end
 end
 
