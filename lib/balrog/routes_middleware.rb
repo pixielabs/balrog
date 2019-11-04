@@ -17,7 +17,7 @@ class Balrog::RoutesMiddleware
 
   def call(env)
     unless env['rack.session']['balrog'] == 'authenticated'
-      html = ApplicationController.renderer.render 'balrog/gate', layout: nil
+      html = ApplicationController.renderer.render 'balrog/gate', layout: 'balrog'
       return [200, {"Content-Type" => "text/html"}, [html]]  
     end
     @app.call(env)
