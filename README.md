@@ -125,7 +125,7 @@ After running the generator, you can now add elements and classes to the
 `views/balrog/gate.html.erb`, add styles to the 
 `assets/stylesheets/application.css` and import the application stylesheet in 
 `app/views/layouts/balrog.html.erb`. For an example, see the 
-[dummy-rails-app](https://github.com/pixielabs/balrog/tree/custom-gate-view/spec/dummy-rails-app) in the spec file.
+[dummy-rails-app](https://github.com/pixielabs/balrog/tree/custom-gate-view/spec/dummy-rails-app) in the spec folder.
 
 ## Contributing
 
