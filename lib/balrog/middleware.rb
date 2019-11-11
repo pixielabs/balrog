@@ -34,7 +34,7 @@ class Balrog::Middleware
     @password_hash = BCrypt::Password.new(input)
   end
 
-  def session_expires_after(time_period)
+  def set_session_expiry(time_period)
     @session_length = time_period
   end
 
