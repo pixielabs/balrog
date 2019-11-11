@@ -60,9 +60,9 @@ class Balrog::Middleware
     end
 
     if @password_hash == submitted_password
-      balrogCookie = { value: 'authenticated' }
-      add_expiry_date(balrogCookie)
-      env['rack.session'][:balrog] = balrogCookie
+      balrog_cookie = { value: 'authenticated' }
+      add_expiry_date(balrog_cookie)
+      env['rack.session'][:balrog] = balrog_cookie
     end
 
     referer = env["HTTP_REFERER"] || '/'
@@ -77,9 +77,9 @@ class Balrog::Middleware
 
   # If the user configured the Balrog session to expire, add the 
   # expiry_date to the Balrog session.
-  def add_expiry_date(cookieHash)
+  def add_expiry_date(cookie_hash)
     if @session_length
-      cookieHash[:expiry_date] = DateTime.current + @session_length
+      cookie_hash[:expiry_date] = DateTime.current + @session_length
     end
   end
 end
