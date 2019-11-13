@@ -32,8 +32,6 @@ Run the installer to generate an initializer:
 $ bundle exec rails generate balrog:install
 Enter New Password: 
 Confirm New Password: 
-Would you like to set a session expiry (y/n): y
-How many hours should the session last?: 4
       create  config/initializers/balrog.rb
 $
 ```
@@ -118,13 +116,13 @@ and change the argument being passed to `session_expires_after`.
 If you can't find the balrog.rb in initializers,
 run the [balrog:install generator.](#installation)
 
-The argument passed to `session_expires_after` can be any of the 
+The argument passed to `set_session_expiry` can be any of the
 [Rails time extensions](https://api.rubyonrails.org/classes/Numeric.html).
 
 ```ruby
 Rails.application.config.middleware.use Balrog::Middleware do
   password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
-  session_expires_after 10.mins
+  session_expires_after 30.minutes
 end
 ```
 

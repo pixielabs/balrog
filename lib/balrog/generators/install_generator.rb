@@ -1,5 +1,4 @@
 require_relative '../password_hasher'
-require_relative '../session_length_ui'
 
 class Balrog::InstallGenerator < Rails::Generators::Base
 
@@ -8,7 +7,8 @@ class Balrog::InstallGenerator < Rails::Generators::Base
     password_hash = PasswordHasher.encrypt_password
     contents = <<~EOF
       Rails.application.config.middleware.use Balrog::Middleware do
-        password_hash '#{password_hash}'#{SessionLengthUI.set_length}
+        password_hash '#{password_hash}'
+        set_session_expiry 30.minutes
       end
     EOF
     create_file "config/initializers/balrog.rb", contents

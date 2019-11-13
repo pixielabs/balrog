@@ -18,7 +18,7 @@ RSpec.describe "Session expires" do
 
       context "after waiting for the session to expire" do
         before do
-          travel 5.hours
+          travel 35.minutes
         end
 
         it "does not show the admin page" do
@@ -41,7 +41,7 @@ RSpec.describe "Session expires" do
 
       context "after waiting for the session to expire" do
         before do
-          travel 5.hours
+          travel 35.minutes
         end
         
         it "does not show the sidekiq page" do
