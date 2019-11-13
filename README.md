@@ -109,20 +109,23 @@ Other usage examples:
 
 ## Changing session expiry length
 
-`session_expires_after` requires the user to login again after a period of time.
+`set_session_expiry` requires the user to login again after a period of time.
 Configuring this with Balrog is easy. Just go the initializer in your config file,
-and change the argument being passed to `session_expires_after`. 
+and change the argument being passed to `set_session_expiry`.
 
-If you can't find the balrog.rb in initializers,
+If you can't find balrog.rb in the initializers folder,
 run the [balrog:install generator.](#installation)
 
 The argument passed to `set_session_expiry` can be any of the
 [Rails time extensions](https://api.rubyonrails.org/classes/Numeric.html).
 
+If you don't want your session to expire, you can remove `set_session_expiry`
+from the initializer completely.
+
 ```ruby
 Rails.application.config.middleware.use Balrog::Middleware do
   password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
-  session_expires_after 30.minutes
+  set_session_expiry 30.minutes
 end
 ```
 
