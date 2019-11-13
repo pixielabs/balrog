@@ -137,5 +137,4 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 
  * Restricting access via `routes.rb`
  * Test coverage
- * Check it's OK with Ruby on Rails 6
  * Expire sessions
