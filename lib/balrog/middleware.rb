@@ -8,8 +8,7 @@ require 'bcrypt'
 # `rails g balrog:install`, and looks a bit like this:
 #
 #  Balrog::Middleware.setup do |config|
-#    config.set_password_hash '$2a$10$IZ/Td/JiQknLW19cTyyl5OAYF2Vf.46D2ovZGlQfdUVbHiMk9gvDy'
-#    config.set_omniauth :google_oauth2, Rails.application.credentials.provider_key, Rails.application.credentials.provider_secret_key
+#    config.set_password_hash '<bcrypt hash>'
 #  end
 
 class Balrog::Middleware
