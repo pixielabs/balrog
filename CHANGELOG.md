@@ -1,3 +1,7 @@
+# 2.0.0
+
+- added support for single sign-on.
+
 # 1.0.0
 
 - added `Balrog::RoutesMiddleware` module, which can be used to protect mounted Rack applications.
