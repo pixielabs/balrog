@@ -125,6 +125,25 @@ Rails.application.config.middleware.use Balrog::Middleware do
   set_session_expiry 30.minutes
 end
 ```
+## Configuring the Balrog gate view
+
+We built Balrog to have a default view and stylesheet so that you can drop 
+Balrog into your project and everything should “just work”.
+However, we don't want to be in your way if you needed to customise 
+your Balrog gate view.
+
+If you want to customise the Balrog view, you can run the `balrog:view` 
+generator, which will copy the required view and layout to your application:
+
+```shell
+$ rails generate balrog:view
+```
+
+After running the generator, you can now add elements and classes to the 
+`views/balrog/gate.html.erb`, add styles to the 
+`assets/stylesheets/application.css` and import the application stylesheet in 
+`app/views/layouts/balrog.html.erb`. For an example, see the 
+[dummy-rails-app](https://github.com/pixielabs/balrog/tree/master/spec/dummy-rails-app) in the spec folder.
 
 ## Contributing
 

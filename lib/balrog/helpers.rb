@@ -6,7 +6,7 @@ module Balrog::Helpers
 
   def authenticate_with_balrog!
     unless authenticated?(session[:balrog])
-      render 'balrog/gate', layout: nil
+      render 'balrog/gate', layout: 'balrog'
     end
   end
 end
