@@ -20,8 +20,27 @@ RSpec.describe "Viewing Sidekiq" do
         visit '/sidekiq'
         fill_in 'password', with: 'wrong_password'
         click_button 'Login'
-        expect(page).to_not have_text "Let me in, I'm Admin#Index."
+        expect(page).to_not have_text "Sidekiq"
         expect(page).to have_field 'password'
+      end
+    end
+    context "using single sign on" do
+      it "shows the admin page" do
+        visit '/sidekiq'
+        click_link 'Sign in with SSO'
+        expect(page).to have_text "Sidekiq"
+      end
+      describe "with the wrong email" do
+        it "shows the Balrog Gate page" do
+          OmniAuth.config.add_mock(
+            :google_oauth2,
+            info: { email: "pippin@fool_of_a_took.co.uk" }
+          )
+          visit '/sidekiq'
+          click_link 'Sign in with SSO'
+          expect(page).to_not have_text "Sidekiq"
+          expect(page).to have_field 'password'
+        end
       end
     end
   end

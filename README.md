@@ -107,6 +107,30 @@ Other usage examples:
 <%= balrog_logout_button class: 'fancy-button--with-default-text' %>
 ```
 
+## Single Sign On
+
+To add single sign on you will need to add the [omniauth gem](https://github.com/omniauth/omniauth)
+to your gem file, along with the omniauth gem for your chosen
+[provider](https://github.com/omniauth/omniauth/wiki/List-of-Strategies).
+
+In `config/initializers/balrog.rb`, call `config.set_omniauth` in the setup block.
+`.set_omniauth` takes the same arguments as the `OmniAuth::Builder#provider`
+[method](https://github.com/omniauth/omniauth#getting-started),
+a provider and any required keys.
+
+To whitelist any email addresses with a specific domain, call
+`config.set_domain_whitelist`in the setup block and pass in the domain.
+If you want to whitelist multiple domains, you can pass multiple domains
+to the `.set_domain_whitelist`.
+
+```ruby
+Balrog::Middleware.setup do |config|
+  credentials = Rails.application.credentials
+  config.set_omniauth :google_oauth2, credentials.google_client_id, credentials.google_client_secret
+  config.set_domain_whitelist 'pixielabs.io', 'the_fellowship.com'
+end
+```
+
 
 ## Contributing
 

@@ -9,10 +9,22 @@
 <body>
 
   <section>
-    <form action='/balrog/signin' method='POST'>
-      <input autofocus type='password' name='password' placeholder='Password'>
-      <button type='submit'>Login</button>
-    </form>
+    <div>
+      <% if Balrog::Middleware.password_hash %>
+        <form action='/balrog/signin' method='POST'>
+          <input autofocus type='password' name='password' placeholder='Password'>
+          <button type='submit' class="button_background">Login</button>
+        </form>
+      <% end %>
+      <% if Balrog::Middleware.omniauth_config %>
+        <%= link_to(
+          "Sign in with SSO",
+          "/auth/#{Balrog::Middleware.omniauth_config[:provider]}",
+          query: current_path,
+          class: 'button_background sso_button'
+        ) %>
+      <% end %>
+    </div>
   </section>
 
   <footer>

@@ -2,7 +2,10 @@
 module Balrog::Helpers
   def authenticate_with_balrog!
     unless session[:balrog] == 'authenticated'
-      render 'balrog/gate', layout: nil
+      view_locals = {
+        current_path: request.path
+      }
+      render 'balrog/gate', layout: nil, locals: view_locals
     end
   end
 end

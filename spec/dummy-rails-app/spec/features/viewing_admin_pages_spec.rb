@@ -24,5 +24,24 @@ RSpec.describe "Viewing admin pages" do
         expect(page).to have_field 'password'
       end
     end
+    context "using single sign on" do
+      it "shows the admin page" do
+        visit '/admin'
+        click_link 'Sign in with SSO'
+        expect(page).to have_text "Let me in, I'm Admin#Index."
+      end
+      describe "with the wrong email" do
+        it "shows the Balrog Gate page" do
+          OmniAuth.config.add_mock(
+            :google_oauth2,
+            info: { email: "samwise@shire_landscaping.org" }
+          )
+          visit '/admin'
+          click_link 'Sign in with SSO'
+          expect(page).to_not have_text "Let me in, I'm Admin#Index."
+          expect(page).to have_field 'password'
+        end
+      end
+    end
   end
 end

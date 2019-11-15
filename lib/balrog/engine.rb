@@ -22,4 +22,17 @@ class Balrog::Engine < Rails::Engine
       balrog/logo.png
     )
   end
+
+  # Insert OmniAuth into middleware stack.
+  initializer "Balrog.middleware", after: :load_config_initializers, before: :build_middleware_stack do |app|
+
+    omniauth_config = Balrog::Middleware.omniauth_config
+    if omniauth_config
+      app.middleware.use OmniAuth::Builder do
+        provider omniauth_config[:provider], *omniauth_config[:args]
+      end
+    end
+
+    app.middleware.use Balrog::Middleware
+  end
 end
