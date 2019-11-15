@@ -110,7 +110,7 @@ Other usage examples:
 ## Changing session expiry length
 
 `set_session_expiry` requires the user to login again after a period of time.
-Configuring this with Balrog is easy. Just go the initializer in your config file,
+To customise this value, open `config/initializers/balrog.rb` after running `balrog:install`
 and change the argument being passed to `set_session_expiry`.
 
 If you can't find balrog.rb in the initializers folder,
