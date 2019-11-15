@@ -113,9 +113,6 @@ Other usage examples:
 Configuring this with Balrog is easy. Just go the initializer in your config file,
 and change the argument being passed to `set_session_expiry`.
 
-If you can't find balrog.rb in the initializers folder,
-run the [balrog:install generator.](#installation)
-
 The argument passed to `set_session_expiry` can be any of the
 [Rails time extensions](https://api.rubyonrails.org/classes/Numeric.html).
 
