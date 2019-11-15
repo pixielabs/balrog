@@ -77,7 +77,7 @@ class Balrog::Middleware
 
   # If the user configured the Balrog session to expire, add the 
   # expiry_date to the Balrog session.
-  def add_expiry_date(cookie_hash)
+  def add_expiry_date!(cookie_hash)
     if @session_length
       cookie_hash[:expiry_date] = DateTime.current + @session_length
     end
