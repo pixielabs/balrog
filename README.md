@@ -119,7 +119,7 @@ run the [balrog:install generator.](#installation)
 The argument passed to `set_session_expiry` can be any of the
 [Rails time extensions](https://api.rubyonrails.org/classes/Numeric.html).
 
-If you don't want your session to expire, you can remove `set_session_expiry`
+If you don't want sessions to expire, remove `set_session_expiry`
 from the initializer completely.
 
 ```ruby
