@@ -1,5 +1,5 @@
 # 1.1.0
-
+- added `Balrog::Middleware#session_expires_after`, which would force end users to login again after a certain period of time.
 - added `balrog:view` generator, enabling users to modify their Balrog gate view.
 
 # 1.0.0

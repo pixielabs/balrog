@@ -1,3 +1,5 @@
+require_relative 'guard'
+
 # Public: Balrog routes middleware that redirects the user to a security
 # gate unless the session includes { 'balrog' => 'authenticated' }.
 # 
@@ -11,17 +13,18 @@
 # mount Sidekiq::Web => '/sidekiq'
 
 class Balrog::RoutesMiddleware
+  include Balrog::Guard
+
   def initialize(app)
     @app = app
   end
 
   def call(env)
-    unless env['rack.session']['balrog'] == 'authenticated'
+    unless authenticated?(env['rack.session']['balrog'])
       html = ApplicationController.renderer.render 'balrog/gate', layout: 'balrog'
       return [200, {"Content-Type" => "text/html"}, [html]]  
     end
     @app.call(env)
-  end 
-
+  end
 end
 

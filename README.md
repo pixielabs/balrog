@@ -30,8 +30,8 @@ Run the installer to generate an initializer:
 
 ```shell
 $ bundle exec rails generate balrog:install
-Enter New Password:
-Confirm New Password:
+Enter New Password: 
+Confirm New Password: 
       create  config/initializers/balrog.rb
 $
 ```
@@ -107,6 +107,24 @@ Other usage examples:
 <%= balrog_logout_button class: 'fancy-button--with-default-text' %>
 ```
 
+## Changing session expiry length
+
+`set_session_expiry` requires the user to login again after a period of time.
+To customise this value, open `config/initializers/balrog.rb` after running `balrog:install`
+and change the argument being passed to `set_session_expiry`.
+
+The argument passed to `set_session_expiry` can be any of the
+[Rails time extensions](https://api.rubyonrails.org/classes/Numeric.html).
+
+If you don't want sessions to expire, remove `set_session_expiry`
+from the initializer completely.
+
+```ruby
+Rails.application.config.middleware.use Balrog::Middleware do
+  password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
+  set_session_expiry 30.minutes
+end
+```
 ## Configuring the Balrog gate view
 
 We built Balrog to have a default view and stylesheet so that you can drop 

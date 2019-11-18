@@ -4,7 +4,7 @@ RSpec.describe "Viewing Sidekiq" do
   context "as an unauthenticated user" do
     it "redirects to Balrog Gate" do
       visit '/sidekiq'
-      expect(page).to_not have_text "Let me in, I'm Admin#Index."
+      expect(page).to_not have_text "Sidekiq"
       expect(page).to have_field 'password'
     end
     describe "with the right password" do
@@ -20,7 +20,7 @@ RSpec.describe "Viewing Sidekiq" do
         visit '/sidekiq'
         fill_in 'password', with: 'wrong_password'
         click_button 'Login'
-        expect(page).to_not have_text "Let me in, I'm Admin#Index."
+        expect(page).to_not have_text "Sidekiq"
         expect(page).to have_field 'password'
       end
     end
