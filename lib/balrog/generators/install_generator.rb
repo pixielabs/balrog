@@ -8,6 +8,7 @@ class Balrog::InstallGenerator < Rails::Generators::Base
     contents = <<~EOF
       Rails.application.config.middleware.use Balrog::Middleware do
         password_hash '#{password_hash}'
+        set_session_expiry 30.minutes
       end
     EOF
     create_file "config/initializers/balrog.rb", contents
