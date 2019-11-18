@@ -174,4 +174,3 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 
  * Restricting access via `routes.rb`
  * Test coverage
- * Expire sessions
