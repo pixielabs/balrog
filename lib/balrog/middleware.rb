@@ -13,8 +13,9 @@ require 'bcrypt'
 
 class Balrog::Middleware
 
-  mattr_reader :omniauth_config
   mattr_reader :password_hash
+  mattr_reader :session_length
+  mattr_reader :omniauth_config
   mattr_reader :domain_whitelist
 
   def initialize(app)
@@ -56,6 +57,10 @@ class Balrog::Middleware
     @@domain_whitelist = domains
   end
 
+  def self.set_session_expiry(time_period)
+    @@session_length = time_period
+  end
+
   def handle_login(env)
     if env['rack.request.form_hash']
       submitted_password = env['rack.request.form_hash']['password']
@@ -78,7 +83,7 @@ class Balrog::Middleware
     end
 
     if password_hash == submitted_password
-      env['rack.session'][:balrog] = 'authenticated'
+      authenticate_user(env)
     end
 
     referer = env["HTTP_REFERER"] || '/'
@@ -91,7 +96,7 @@ class Balrog::Middleware
       user_email = env['omniauth.auth']['info']['email']
       email_domain = user_email.split("@").last
     end
-
+    
     unless email_domain
       return [302, {"Location" => referer}, [""]]
     end
@@ -110,7 +115,7 @@ class Balrog::Middleware
     end
 
     if domain_whitelist && domain_whitelist.include?(email_domain)
-      env['rack.session'][:balrog] = 'authenticated'
+      authenticate_user(env)
     end
 
     referer = env["omniauth.origin"] || '/'
@@ -137,5 +142,18 @@ class Balrog::Middleware
     method == "DELETE" && path == '/balrog/logout'
   end
 
+  def authenticate_user(env)
+    session_data = { value: 'authenticated' }
+    add_expiry_date!(session_data)
+    env['rack.session'][:balrog] = session_data
+  end
+
+  # If the user configured the Balrog session to expire, add the 
+  # expiry_date to the Balrog session.
+  def add_expiry_date!(session_data)
+    if session_length
+      session_data[:expiry_date] = DateTime.current + session_length
+    end
+  end
 end
 

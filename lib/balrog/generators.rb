@@ -1,6 +1,6 @@
 # This Railtie makes the Balrog Generators available from the command line.
 class Balrog::Generators < Rails::Railtie
   generators do
-    require File.join(File.dirname(__FILE__), 'generators', 'install_generator')
+    Dir[File.join(__dir__, 'generators', '*.rb')].each { |file| require file }
   end
 end

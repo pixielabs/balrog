@@ -13,3 +13,10 @@
  *= require_tree .
  *= require_self
  */
+
+.rainbow-text {
+  background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
