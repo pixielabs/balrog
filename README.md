@@ -18,6 +18,18 @@ advantages:
 * Better support for password managers (which often don't support basic
   authentication dialog boxes).
 
+## Table of Contents
+
+- [Installation](#Installation)
+- [Regenerating a password hash](#Regenerating-a-password-hash)
+- [Restricting access in a controller](#Restricting-access-in-a-controller)
+- [Restricting access to mounted Rack applications](#Restricting-access-to-mounted-Rack-applications-within-config/routes.rb)
+- [Logout button](#Logout-button)
+- [Changing session expiry length](#Changing-session-expiry-length)
+- [Configuring the Balrog gate view](#Configuring-the-Balrog-gate-view)
+- [Single Sign On](#Single-Sign-On)
+- [Contributing](#Contributing)
+
 ## Installation
 
 Add the gem to your Gemfile:
@@ -120,9 +132,9 @@ If you don't want sessions to expire, remove `set_session_expiry`
 from the initializer completely.
 
 ```ruby
-Rails.application.config.middleware.use Balrog::Middleware do
-  password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
-  set_session_expiry 30.minutes
+Balrog::Middleware.setup do |config|
+  config.password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
+  config.set_session_expiry 30.minutes
 end
 ```
 
@@ -161,6 +173,8 @@ To whitelist any email addresses with a specific domain, call
 `config.set_domain_whitelist`in the setup block and pass in the domain.
 If you want to whitelist multiple domains, you can pass multiple domains
 to the `.set_domain_whitelist`.
+
+Balrog does not require a password to be set if you wish to use single sign-on only. 
 
 ```ruby
 Balrog::Middleware.setup do |config|
