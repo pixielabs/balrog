@@ -1,6 +1,6 @@
 <section>
   <div>
-    <% if Balrog::Middleware.password_hash %>
+    <% if Balrog::Middleware.password_hash || !Balrog::Middleware.omniauth_config %>
       <form action='/balrog/signin' method='POST'>
         <input autofocus type='password' name='password' placeholder='Password'>
         <button type='submit' class="button_background">Login</button>
