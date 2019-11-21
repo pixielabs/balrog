@@ -34,7 +34,7 @@ RSpec.describe "Viewing Sidekiq" do
         it "shows the Balrog Gate page" do
           OmniAuth.config.add_mock(
             :google_oauth2,
-            info: { email: "pippin@fool_of_a_took.co.uk" }
+            info: { email: "pippin@fool-of-a-took.co.uk" }
           )
           visit '/sidekiq'
           click_link 'Sign in with SSO'
