@@ -34,7 +34,7 @@ RSpec.describe "Viewing admin pages" do
         it "shows the Balrog Gate page" do
           OmniAuth.config.add_mock(
             :google_oauth2,
-            info: { email: "samwise@shire_landscaping.org" }
+            info: { email: "samwise@shire-landscaping.org" }
           )
           visit '/admin'
           click_link 'Sign in with SSO'
