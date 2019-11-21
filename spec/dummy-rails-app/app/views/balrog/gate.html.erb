@@ -14,7 +14,6 @@
       <%= link_to(
         "Sign in with SSO",
         "/auth/#{Balrog::Middleware.omniauth_config[:provider]}",
-        query: current_path,
         class: 'button_background sso_button'
       ) %>
     <% end %>
