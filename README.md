@@ -28,6 +28,7 @@ advantages:
 - [Changing session expiry length](#Changing-session-expiry-length)
 - [Configuring the Balrog gate view](#Configuring-the-Balrog-gate-view)
 - [Single Sign On](#Single-Sign-On)
+- [Upgrading from 1.1 to 2.0](#Upgrading-from-1.1-to-2.0)
 - [Contributing](#Contributing)
 
 ## Installation
@@ -183,6 +184,33 @@ Balrog::Middleware.setup do |config|
   config.set_domain_whitelist 'pixielabs.io', 'the_fellowship.com'
 end
 ```
+
+## Upgrading from 1.1 to 2.0
+
+To upgrade, you will need to change your balrog initializer. 
+
+1. Instead of calling `Rails.application.config.middleware.use Balrog::Middleware`, you will now need to call `Balrog::Middleware.setup`. 
+
+2. You will also need to change the block you pass into these methods as well. `#password_hash` and `#set_session_expiry` now need to called on a block parameter, e.g `set_session_expiry 30.minutes` needs to be changed to `config.set_session_expiry 30.minutes`.
+
+See below for code examples.
+
+```ruby
+# Balrog 1.1
+Rails.application.config.middleware.use Balrog::Middleware do
+  password_hash '$2a$12$I8Fp3e2GfSdM7KFyoMx56.BVdHeeyk9DQWKkdsxw7USvU/mC8a8.q'
+  set_session_expiry 30.minutes
+end
+```
+
+```ruby
+# Balrog 2.0
+Balrog::Middleware.setup do |config|
+  config.set_password_hash '$2a$12$9lquJW6mVYYS1pD1xYMGzulyC6sEDuLIUfkA/Y7F3RQ8psLNYyLeO'
+  config.set_session_expiry 30.minutes
+end
+```
+
 ## Contributing
 
 ### Running the tests
@@ -206,7 +234,6 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 - Please try not to mess with the package.json, version, or history. If you
   want to have your own version, or is otherwise necessary, that is fine, but
   please isolate to its own commit so we can cherry-pick around it.
-
 
 ## TODO
 
