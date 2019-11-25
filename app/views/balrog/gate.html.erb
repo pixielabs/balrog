@@ -1,12 +1,12 @@
 <section>
   <div>
-    <% if Balrog::Middleware.password_hash || !Balrog::Middleware.omniauth_config %>
+    <% if show_balrog_password_prompt? %>
       <form action='/balrog/signin' method='POST'>
         <input autofocus type='password' name='password' placeholder='Password'>
         <button type='submit' class="button_background">Login</button>
       </form>
     <% end %>
-    <% if Balrog::Middleware.omniauth_config %>
+    <% if balrog_omniauth_configured? %>
       <%= link_to(
         "Sign in with SSO",
         "/auth/#{Balrog::Middleware.omniauth_config[:provider]}",
