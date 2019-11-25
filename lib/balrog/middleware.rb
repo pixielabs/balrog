@@ -1,4 +1,5 @@
 require 'bcrypt'
+require_relative 'middleware/controller'
 
 # Public: Balrog middleware that handles form submissions, checking the
 # password against the configured hash, and setting a session variable if
@@ -12,6 +13,7 @@ require 'bcrypt'
 #  end
 
 class Balrog::Middleware
+  include Controller
 
   mattr_reader :password_hash
   mattr_reader :session_length
@@ -26,11 +28,11 @@ class Balrog::Middleware
     path = env["PATH_INFO"]
     method = env["REQUEST_METHOD"]
     if login_request?(path, method)
-      handle_login(env)
+      password_login(env)
     elsif omniauth_request?(path, method)
-      handle_omniauthentication(env)
+      omniauthentication(env)
     elsif logout_request?(path, method)
-      handle_logout(env)
+      logout(env)
     else
       @app.call(env)
     end
@@ -61,73 +63,6 @@ class Balrog::Middleware
     @@session_length = time_period
   end
 
-  def handle_login(env)
-    if env['rack.request.form_hash']
-      submitted_password = env['rack.request.form_hash']['password']
-    end
-
-    unless submitted_password
-      return [302, {"Location" => referer}, [""]]
-    end
-
-    unless password_hash
-      warn <<~EOF
-
-        !! Balrog has not been configured with a password_hash. You shall not
-        !! pass! When adding Balrog::Middleware to your middleware stack, pass
-        !! in a block and call `password_hash` passing in a bcrypt hash.
-        !!
-        !! Check out https://github.com/pixielabs/balrog for more information.
-
-      EOF
-    end
-
-    if password_hash == submitted_password
-      authenticate_user(env)
-    end
-
-    referer = env["HTTP_REFERER"] || '/'
-
-    [302, {"Location" => referer}, [""]]
-  end
-
-  def handle_omniauthentication(env)
-    if env['omniauth.auth']['info']['email']
-      user_email = env['omniauth.auth']['info']['email']
-      email_domain = user_email.split("@").last
-    end
-    
-    unless email_domain
-      return [302, {"Location" => referer}, [""]]
-    end
-
-    unless domain_whitelist
-      warn <<~EOF
-
-        !! Balrog has not been configured with a domain_whitelist. You shall not
-        !! pass! When setting up Balrog::Middleware, pass in a block and
-        !! call `set_domain_whitelist` passing in an omniauth provider and
-        !! required keys.
-        !!
-        !! Check out https://github.com/pixielabs/balrog for more information.
-
-      EOF
-    end
-
-    if domain_whitelist && domain_whitelist.include?(email_domain)
-      authenticate_user(env)
-    end
-
-    referer = env["omniauth.origin"] || '/'
-
-    [302, {"Location" => referer}, [""]]
-  end
-
-  def handle_logout(env)
-    env['rack.session'].delete(:balrog)
-    [302, {"Location" => '/'}, [""]]
-  end
-
   def login_request?(path, method)
     method == 'POST' && path == '/balrog/signin'
   end
@@ -140,20 +75,6 @@ class Balrog::Middleware
 
   def logout_request?(path, method)
     method == "DELETE" && path == '/balrog/logout'
-  end
-
-  def authenticate_user(env)
-    session_data = { value: 'authenticated' }
-    add_expiry_date!(session_data)
-    env['rack.session'][:balrog] = session_data
-  end
-
-  # If the user configured the Balrog session to expire, add the 
-  # expiry_date to the Balrog session.
-  def add_expiry_date!(session_data)
-    if session_length
-      session_data[:expiry_date] = DateTime.current + session_length
-    end
   end
 end
 
