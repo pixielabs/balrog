@@ -6,17 +6,18 @@
 [![CircleCI](https://circleci.com/gh/pixielabs/balrog.svg?style=svg)](https://circleci.com/gh/pixielabs/balrog)
 
 Balrog is a lightweight authorization library for Ruby on Rails >= 5 written by
-[Pixie Labs](https://pixielabs.io) that can protect your routes with a single
-username & password combination.
+[Pixie Labs](https://pixielabs.io) that can protect your routes. Balrog can be 
+configured to authorize users using a simple password or Single Sign-on or both.
 
-Balrog is an alternative to `http_basic_authentication_with` that provides some
-advantages:
-
-* Uses a password hash instead of a plaintext password.
-* Provides a lightweight HTML form instead of inconsistent basic
-  authentication.
-* Better support for password managers (which often don't support basic
-  authentication dialog boxes).
+- If you choose to protect your routes with a password, the password will be 
+ stored as a password hash, not plain text, and Balrog provides a lightweight 
+ HTML form that can be styled and used with password managers.
+- If you choose to configure Balrog to use SSO, you can whitelist multiple email 
+domains, allowing groups of users access parts of your app, without circulating
+a password.
+- Balrog's authentication can and should be configured to expire, requiring 
+users to sign-in again in accordance with [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration) best practices.
+- Balrog can also be used to restrict access to [mounted Rack applications](#Restricting-access-to-mounted-Rack-applications-within-config/routes.rb) like Sidekiq.
 
 ## Table of Contents
 
