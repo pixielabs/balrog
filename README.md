@@ -192,7 +192,7 @@ To upgrade, you will need to change your Balrog initializer.
 
 1. Instead of calling `Rails.application.config.middleware.use Balrog::Middleware`, you will now need to call `Balrog::Middleware.setup`. 
 
-2. You will also need to change the block you pass into these methods as well. `#password_hash` and `#set_session_expiry` now need to called on a block parameter, e.g `set_session_expiry 30.minutes` needs to be changed to `config.set_session_expiry 30.minutes`.
+2. Change the block you pass into these methods. `#password_hash` and `#set_session_expiry` now need to called on a block parameter, e.g `set_session_expiry 30.minutes` needs to be changed to `config.set_session_expiry 30.minutes`.
 
 See below for code examples.
 
