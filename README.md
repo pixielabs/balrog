@@ -6,17 +6,31 @@
 [![CircleCI](https://circleci.com/gh/pixielabs/balrog.svg?style=svg)](https://circleci.com/gh/pixielabs/balrog)
 
 Balrog is a lightweight authorization library for Ruby on Rails >= 5 written by
-[Pixie Labs](https://pixielabs.io) that can protect your routes with a single
-username & password combination.
+[Pixie Labs](https://pixielabs.io) that can protect your routes. Balrog can be 
+configured to authorize users using a simple password or single sign-on or both.
 
-Balrog is an alternative to `http_basic_authentication_with` that provides some
-advantages:
+- If you choose to protect your routes with a password, the password will be 
+ stored as a password hash, not plain text, and Balrog provides a lightweight 
+ HTML form that can be styled and used with password managers.
+- If you choose to configure Balrog to use SSO, you can whitelist multiple email 
+domains, allowing groups of users access parts of your app, without circulating
+a password.
+- Balrog's authentication can and should be configured to expire, requiring 
+users to sign-in again in accordance with [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration) best practices.
+- Balrog can also be used to restrict access to [mounted Rack applications](#Restricting-access-to-mounted-Rack-applications-within-config/routes.rb) like Sidekiq.
 
-* Uses a password hash instead of a plaintext password.
-* Provides a lightweight HTML form instead of inconsistent basic
-  authentication.
-* Better support for password managers (which often don't support basic
-  authentication dialog boxes).
+## Table of Contents
+
+- [Installation](#Installation)
+- [Regenerating a password hash](#Regenerating-a-password-hash)
+- [Restricting access in a controller](#Restricting-access-in-a-controller)
+- [Restricting access to mounted Rack applications](#Restricting-access-to-mounted-Rack-applications-within-config/routes.rb)
+- [Logout button](#Logout-button)
+- [Changing session expiry length](#Changing-session-expiry-length)
+- [Configuring the Balrog gate view](#Configuring-the-Balrog-gate-view)
+- [Single Sign On](#Single-Sign-On)
+- [Upgrading from 1.1 to 2.0](#Upgrading-from-1.1-to-2.0)
+- [Contributing](#Contributing)
 
 ## Installation
 
@@ -120,11 +134,12 @@ If you don't want sessions to expire, remove `set_session_expiry`
 from the initializer completely.
 
 ```ruby
-Rails.application.config.middleware.use Balrog::Middleware do
-  password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
-  set_session_expiry 30.minutes
+Balrog::Middleware.setup do |config|
+  config.password_hash '$2a$12$BLz7XCFdG9YfwL64KlTgY.T3FY55aQk8SZEzHfpHfw15F2uN1kuSi'
+  config.set_session_expiry 30.minutes
 end
 ```
+
 ## Configuring the Balrog gate view
 
 We built Balrog to have a default view and stylesheet so that you can drop 
@@ -144,6 +159,58 @@ After running the generator, you can now add elements and classes to the
 `assets/stylesheets/application.css` and import the application stylesheet in 
 `app/views/layouts/balrog.html.erb`. For an example, see the 
 [dummy-rails-app](https://github.com/pixielabs/balrog/tree/master/spec/dummy-rails-app) in the spec folder.
+
+## Single Sign On
+
+To add single sign on you will need to add the [omniauth gem](https://github.com/omniauth/omniauth)
+to your gem file, along with the omniauth gem for your chosen
+[provider](https://github.com/omniauth/omniauth/wiki/List-of-Strategies).
+
+In `config/initializers/balrog.rb`, call `config.set_omniauth` in the setup block.
+`.set_omniauth` takes the same arguments as the `OmniAuth::Builder#provider`
+[method](https://github.com/omniauth/omniauth#getting-started),
+a provider and any required keys.
+
+To whitelist any email addresses with a specific domain, call
+`config.set_domain_whitelist`in the setup block and pass in the domain.
+If you want to whitelist multiple domains, you can pass multiple domains
+to the `.set_domain_whitelist`.
+
+Balrog does not require a password to be set if you wish to use single sign-on only. 
+
+```ruby
+Balrog::Middleware.setup do |config|
+  credentials = Rails.application.credentials
+  config.set_omniauth :google_oauth2, credentials.google_client_id, credentials.google_client_secret
+  config.set_domain_whitelist 'pixielabs.io', 'the_fellowship.com'
+end
+```
+
+## Upgrading from 1.1 to 2.0
+
+To upgrade, you will need to change your Balrog initializer. 
+
+1. Instead of calling `Rails.application.config.middleware.use Balrog::Middleware`, you will now need to call `Balrog::Middleware.setup`. 
+
+2. Change the block you pass into these methods. `#password_hash` and `#set_session_expiry` now need to called on a block parameter, e.g `set_session_expiry 30.minutes` needs to be changed to `config.set_session_expiry 30.minutes`.
+
+See below for code examples.
+
+```ruby
+# Balrog 1.1
+Rails.application.config.middleware.use Balrog::Middleware do
+  password_hash '$2a$12$I8Fp3e2GfSdM7KFyoMx56.BVdHeeyk9DQWKkdsxw7USvU/mC8a8.q'
+  set_session_expiry 30.minutes
+end
+```
+
+```ruby
+# Balrog 2.0
+Balrog::Middleware.setup do |config|
+  config.set_password_hash '$2a$12$9lquJW6mVYYS1pD1xYMGzulyC6sEDuLIUfkA/Y7F3RQ8psLNYyLeO'
+  config.set_session_expiry 30.minutes
+end
+```
 
 ## Contributing
 
@@ -168,7 +235,6 @@ Before contributing, please read the [code of conduct](CODE_OF_CONDUCT.md).
 - Please try not to mess with the package.json, version, or history. If you
   want to have your own version, or is otherwise necessary, that is fine, but
   please isolate to its own commit so we can cherry-pick around it.
-
 
 ## TODO
 

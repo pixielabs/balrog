@@ -26,6 +26,10 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# Use OmniAuth for single sign-on
+gem 'omniauth'
+# Use google as the OmniAuth provider
+gem 'omniauth-google-oauth2'
 
 # Use Sidekiq for background jobs
 gem 'sidekiq'

@@ -27,8 +27,7 @@ footer {
   align-self: center;
 }
 
-button {
-  -webkit-appearance: button;
+.button_background {
   overflow: visible;
   text-transform: none;
   -webkit-transition-duration: 0.4s;
@@ -39,13 +38,25 @@ button {
   font-size: 20px;
   font-family: 'Helvetica Neue', 'Helvetica', Calibri, 'Trebuchet MS', sans-serif;
   cursor: pointer;
-  padding: 8px 10px;
   border: 0;
   font-weight: 100;
   letter-spacing: 1px;
+  margin: 5px 0px;
 }
 
-button:hover {
+button {
+  -webkit-appearance: button;
+  padding: 8px 10px;
+}
+
+.sso_button {
+  display: inline-block;
+  text-decoration: none;
+  padding: 8px 0px;
+  width: 305.438px;
+}
+
+button:hover, .sso_button:hover {
   background-color: rgb(201, 41, 41);
 }
 

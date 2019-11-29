@@ -6,9 +6,9 @@ class Balrog::InstallGenerator < Rails::Generators::Base
   def create_initializer_file
     password_hash = PasswordHasher.encrypt_password
     contents = <<~EOF
-      Rails.application.config.middleware.use Balrog::Middleware do
-        password_hash '#{password_hash}'
-        set_session_expiry 30.minutes
+      Balrog::Middleware.setup do |config|
+        config.set_password_hash '#{password_hash}'
+        config.set_session_expiry 30.minutes
       end
     EOF
     create_file "config/initializers/balrog.rb", contents

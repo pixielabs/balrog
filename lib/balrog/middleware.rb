@@ -1,4 +1,5 @@
 require 'bcrypt'
+require_relative 'middleware/controller'
 
 # Public: Balrog middleware that handles form submissions, checking the
 # password against the configured hash, and setting a session variable if
@@ -7,80 +8,73 @@ require 'bcrypt'
 # This is typically set up in an initialize when you run
 # `rails g balrog:install`, and looks a bit like this:
 #
-#    Rails.application.config.middleware.use Balrog::Middleware do
-#      password_hash '<bcrypt hash>'
-#    end
+#  Balrog::Middleware.setup do |config|
+#    config.set_password_hash '<bcrypt hash>'
+#  end
+
 class Balrog::Middleware
-  def initialize(app, &block)
+  include Controller
+
+  mattr_reader :password_hash
+  mattr_reader :session_length
+  mattr_reader :omniauth_config
+  mattr_reader :domain_whitelist
+
+  def initialize(app)
     @app = app
-    instance_eval(&block) if block_given?
   end
 
   def call(env)
     path = env["PATH_INFO"]
     method = env["REQUEST_METHOD"]
-    if method == 'POST' && path == '/balrog/signin'
-      handle_login(env)
-    elsif method == "DELETE" && path == '/balrog/logout'
-      handle_logout(env)
+    if login_request?(path, method)
+      password_login(env)
+    elsif omniauth_request?(path, method)
+      omniauthentication(env)
+    elsif logout_request?(path, method)
+      logout(env)
     else
       @app.call(env)
     end
   end
 
+  def self.setup
+    yield self
+  end
+
   private
 
-  def password_hash(input)
-    @password_hash = BCrypt::Password.new(input)
+  def self.set_password_hash(input)
+    @@password_hash = BCrypt::Password.new(input)
   end
 
-  def set_session_expiry(time_period)
-    @session_length = time_period
+  def self.set_omniauth(provider, *args)
+    @@omniauth_config = {
+      provider: provider,
+      args: args
+    }
   end
 
-  def handle_login(env)
-    if env['rack.request.form_hash']
-      submitted_password = env['rack.request.form_hash']['password']
-    end
-
-    unless submitted_password
-      return [302, {"Location" => referer}, [""]]
-    end
-
-    unless @password_hash
-      warn <<~EOF
-
-        !! Balrog has not been configured with a password_hash. You shall not
-        !! pass! When adding Balrog::Middleware to your middleware stack, pass
-        !! in a block and call `password_hash` passing in a bcrypt hash.
-        !!
-        !! Check out https://github.com/pixielabs/balrog for more information.
-
-      EOF
-    end
-
-    if @password_hash == submitted_password
-      session_data = { value: 'authenticated' }
-      add_expiry_date!(session_data)
-      env['rack.session'][:balrog] = session_data
-    end
-
-    referer = env["HTTP_REFERER"] || '/'
-
-    [302, {"Location" => referer}, [""]]
+  def self.set_domain_whitelist(*domains)
+    @@domain_whitelist = domains
   end
 
-  def handle_logout(env)
-    env['rack.session'].delete(:balrog)
-    [302, {"Location" => '/'}, [""]]
+  def self.set_session_expiry(time_period)
+    @@session_length = time_period
   end
 
-  # If the user configured the Balrog session to expire, add the 
-  # expiry_date to the Balrog session.
-  def add_expiry_date!(session_data)
-    if @session_length
-      session_data[:expiry_date] = DateTime.current + @session_length
-    end
+  def login_request?(path, method)
+    method == 'POST' && path == '/balrog/signin'
+  end
+
+  def omniauth_request?(path, method)
+    omniauth_config &&
+      method == "GET" &&
+      path == "/auth/#{omniauth_config[:provider]}/callback"
+  end
+
+  def logout_request?(path, method)
+    method == "DELETE" && path == '/balrog/logout'
   end
 end
 
