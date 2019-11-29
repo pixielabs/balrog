@@ -188,7 +188,7 @@ end
 
 ## Upgrading from 1.1 to 2.0
 
-To upgrade, you will need to change your balrog initializer. 
+To upgrade, you will need to change your Balrog initializer. 
 
 1. Instead of calling `Rails.application.config.middleware.use Balrog::Middleware`, you will now need to call `Balrog::Middleware.setup`. 
 
