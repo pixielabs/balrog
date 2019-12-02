@@ -166,6 +166,11 @@ To add single sign on you will need to add the [omniauth gem](https://github.com
 to your gem file, along with the omniauth gem for your chosen
 [provider](https://github.com/omniauth/omniauth/wiki/List-of-Strategies).
 
+**n.b. You also need to add the `omniauth-rails_csrf_protection` gem to your Gemfile.**
+This is required to protect your app from Cross-Site Request Forgery.
+For more information see the [omniauth wiki page](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284)
+on CVE-2015-9284.
+
 In `config/initializers/balrog.rb`, call `config.set_omniauth` in the setup block.
 `.set_omniauth` takes the same arguments as the `OmniAuth::Builder#provider`
 [method](https://github.com/omniauth/omniauth#getting-started),
@@ -185,6 +190,10 @@ Balrog::Middleware.setup do |config|
   config.set_domain_whitelist 'pixielabs.io', 'the_fellowship.com'
 end
 ```
+If you have configured the Balrog gate view, make sure that all requests to
+`/auth/:provider` are `POST` requests. i.e. use `button_to` not `link_to`.
+For an example, see the [balrog gate in the spec app](https://github.com/pixielabs/balrog/blob/master/spec/dummy-rails-app/app/views/balrog/gate.html.erb),
+or for more information see the [omniauth wiki page](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284).
 
 ## Upgrading from 1.1 to 2.0
 
