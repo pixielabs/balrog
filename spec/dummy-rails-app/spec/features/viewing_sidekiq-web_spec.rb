@@ -27,7 +27,7 @@ RSpec.describe "Viewing Sidekiq" do
     context "using single sign on" do
       it "shows the admin page" do
         visit '/sidekiq'
-        click_link 'Sign in with SSO'
+        click_button 'Sign in with SSO'
         expect(page).to have_text "Sidekiq"
       end
       describe "with the wrong email" do
@@ -37,7 +37,7 @@ RSpec.describe "Viewing Sidekiq" do
             info: { email: "pippin@fool-of-a-took.co.uk" }
           )
           visit '/sidekiq'
-          click_link 'Sign in with SSO'
+          click_button 'Sign in with SSO'
           expect(page).to_not have_text "Sidekiq"
           expect(page).to have_field 'password'
         end

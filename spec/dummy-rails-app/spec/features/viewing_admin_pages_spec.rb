@@ -27,7 +27,7 @@ RSpec.describe "Viewing admin pages" do
     context "using single sign on" do
       it "shows the admin page" do
         visit '/admin'
-        click_link 'Sign in with SSO'
+        click_button 'Sign in with SSO'
         expect(page).to have_text "Let me in, I'm Admin#Index."
       end
       describe "with the wrong email" do
@@ -37,7 +37,7 @@ RSpec.describe "Viewing admin pages" do
             info: { email: "samwise@shire-landscaping.org" }
           )
           visit '/admin'
-          click_link 'Sign in with SSO'
+          click_button 'Sign in with SSO'
           expect(page).to_not have_text "Let me in, I'm Admin#Index."
           expect(page).to have_field 'password'
         end
