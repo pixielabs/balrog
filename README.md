@@ -185,6 +185,10 @@ Balrog::Middleware.setup do |config|
   config.set_domain_whitelist 'pixielabs.io', 'the_fellowship.com'
 end
 ```
+**Please note:** there is currently a CSRF vulnerability which affects OmniAuth 
+(designated [CVE-2015-9284](https://nvd.nist.gov/vuln/detail/CVE-2015-9284)) 
+that requires mitigation at the application level. More details on how to do 
+this can be found on the [Omniauth Wiki](https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284).
 
 ## Upgrading from 1.1 to 2.0
 
