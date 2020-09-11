@@ -41,6 +41,9 @@ gem 'redis'
 # Use foreman to run Procfile
 gem 'foreman'
 
+# Included to ensure Balrog works with activerecord-session_store
+gem 'activerecord-session_store'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
