@@ -220,11 +220,19 @@ end
 
 ### Running the tests
 
-Tests are part of the dummy Rails app within the spec folder:
+Tests are part of the dummy Rails app within the spec folder. To run the tests:
 
 ```
 $ cd spec/dummy-rails-app
 $ bundle
+$ rails generate active_record:session_migration
+$ redis-server
+```
+
+Then in a different terminal:
+
+```
+$ cd spec/dummy-rails-app
 $ rspec
 ```
 
